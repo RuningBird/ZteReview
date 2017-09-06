@@ -5,23 +5,77 @@ import java.util.Arrays;
  */
 public class Main {
     public static void main(String[] args) {
-        bubbleSort();
+        MySort ms = new MySort();
+        ms.shellSort();
+        ms.showArr("排序后：");
     }
 
-    public static void bubbleSort() {
-        int[] arr = {5, 4, 3, 2, 1};
-        System.out.println("排序前：" + Arrays.toString(arr));
 
+}
+
+class MySort {
+    //    int[] arr = {5, 4, 3, 2, 1};
+    int[] arr = {26, 53, 67, 48, 57, 13, 48, 32, 60, 50};
+
+
+    /* 插入类：希尔排序
+     * 是直接插入排序的改进
+     */
+    public void shellSort() {
+        int[] delta = {5, 3, 1};
+        for (int i : delta) { // 以每一个间隔d进行直接插入排序
+            shellInsert(i);
+        }
+    }
+
+    /*希尔排序：直接插入排序*/
+    private void shellInsert(int d) {
+
+        for (int i = d; i < arr.length; i++) { //第二个元素开始
+            int temp = arr[i];
+            int j = i - d; //前一个元素的下表
+            // 当前位置的值temp比前一个元素的值小
+            while (j >= 0 && temp < arr[j]) { //寻找插入位置,j>=0要放在前面
+                arr[j + d] = arr[j];
+                j = j - d;
+            }
+            arr[j + d] = temp;//值插入正确的位置
+        }
+    }
+
+    /*希尔排序：直接插入排序*/
+    private void shellInsert1(int d) {
+        int temp;
+        int j = 0;
+        for (int i = d; i < arr.length; i++) {
+            temp = arr[i];
+            for (j = i - d; j >= 0; j -= d) {//i-d 前一个元素的下标，一直到第一个元素的位置
+                if (temp < arr[j]) {
+                    arr[j + d] = arr[j]; // 寻找插入位置
+                } else {
+                    break;
+                }
+            }
+            arr[j + d] = temp;//插入到正确的位置
+        }
+    }
+
+    /*交换类：冒泡排序*/
+    public void bubbleSort() {
+        System.out.println("排序前：" + Arrays.toString(arr));
         for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                if (arr[j] > arr[i]) {
-                    int tmp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = tmp;
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j + 1] < arr[j]) {
+                    int tmp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = tmp;
                 }
             }
         }
-
         System.out.println("排序后：" + Arrays.toString(arr));
+    }
+
+    public void showArr(String s) {
+        System.out.println(s + Arrays.toString(arr));
     }
 }
